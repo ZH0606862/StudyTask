@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}任务详情 - {{ task.title }} - StudyTask{% endblock %}
+
+{% block content %}
+<div class="detail-container card">
+    <div class="detail-header">
+        <div class="detail-title-group">
+            <span class="badge badge-course">{{ task.course }}</span>
+            <h1 class="detail-title">{{ task.title }}</h1>
+        </div>
+        <div class="detail-badges">
+            <span class="badge badge-priority-{{ task.priority }}">{{ task.priority }}优先级</span>
+            {% if task.status == '已完成' %}
+                <span class="badge badge-success">已完成</span>
+            {% elif task.is_overdue %}
+                <span class="badge badge-danger">⚠️ 已逾期</span>
+            {% elif task.is_due_soon %}
+                <span class="badge badge-warning">⏰ 即将到期</span>
+            {% else %}
+                <span class="badge badge-info">{{ task.status }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span class="detail-label">截止日期</span>
+            <span class="detail-value highlight-due">📅 {{ task.due_date }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">当前状态</span>
+            <span class="detail-value">
+                <form method="POST" action="{{ url_for('task_change_status', task_id=task.id) }}" class="status-quick-form" style="display: inline-block;">
+                    <input type="hidden" name="redirect_to" value="{{ url_for('task_detail', task_id=task.id) }}">
+                    <select name="status" class="status-select status-select-{{ task.status }}" onchange="this.form.submit()">
+                        <option value="待完成" {% if task.status == '待完成' %}selected{% endif %}>待完成</option>
+                        <option value="进行中" {% if task.status == '进行中' %}selected{% endif %}>进行中</option>
+                        <option value="已完成" {% if task.status == '已完成' %}selected{% endif %}>已完成</option>
+                    </select>
+                </form>
+            </span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">创建时间</span>
+            <span class="detail-value text-muted">{{ task.created_at }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">最后更新</span>
+            <span class="detail-value text-muted">{{ task.updated_at }}</span>
+        </div>
+    </div>
+
+    <div class="detail-desc-box">
+        <h3>任务详细描述与要求</h3>
+        <div class="desc-content">
+            {% if task.description %}
+                <p>{{ task.description|e|replace('\n', '<br>')|safe }}</p>
+            {% else %}
+                <p class="text-muted" style="font-style: italic;">（未填写任务描述）</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="{{ url_for('task_edit', task_id=task.id) }}" class="btn btn-primary">✏️ 编辑任务</a>
+        <form method="POST" action="{{ url_for('task_delete', task_id=task.id) }}" style="display:inline;" onsubmit="return confirmDelete('{{ task.title }}');">
+            <button type="submit" class="btn btn-danger">🗑️ 删除任务</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn btn-outline">⬅️ 返回任务列表</a>
+    </div>
+</div>
+{% endblock %}

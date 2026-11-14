@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}新建学习任务 - StudyTask{% endblock %}
+
+{% block content %}
+<div class="form-container card">
+    <div class="form-header">
+        <h2>新建学习任务</h2>
+        <p class="form-subtitle">填写以下任务信息，带 <span class="required-star">*</span> 的为必填项</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('task_create') }}" class="task-form">
+        <div class="form-group">
+            <label for="title" class="form-label">
+                任务名称 <span class="required-star">*</span>
+                <span class="field-hint">(1~100字)</span>
+            </label>
+            <input 
+                type="text" 
+                id="title" 
+                name="title" 
+                class="form-control" 
+                placeholder="例如：完成数据结构实验报告三" 
+                value="{{ form_data.get('title', '') }}" 
+                maxlength="100" 
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="course" class="form-label">
+                    所属课程 <span class="required-star">*</span>
+                    <span class="field-hint">(1~60字)</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="course" 
+                    name="course" 
+                    class="form-control" 
+                    placeholder="例如：数据结构" 
+                    value="{{ form_data.get('course', '') }}" 
+                    maxlength="60" 
+                    required
+                >
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="due_date" class="form-label">
+                    截止日期 <span class="required-star">*</span>
+                    <span class="field-hint">(格式：YYYY-MM-DD)</span>
+                </label>
+                <input 
+                    type="date" 
+                    id="due_date" 
+                    name="due_date" 
+                    class="form-control" 
+                    value="{{ form_data.get('due_date', '') }}" 
+                    required
+                >
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="priority" class="form-label">优先级 <span class="required-star">*</span></label>
+                <select id="priority" name="priority" class="form-select">
+                    {% for p in priority_options %}
+                        <option value="{{ p }}" {% if form_data.get('priority', '中') == p %}selected{% endif %}>{{ p }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="status" class="form-label">初始状态 <span class="required-star">*</span></label>
+                <select id="status" name="status" class="form-select">
+                    {% for s in status_options %}
+                        <option value="{{ s }}" {% if form_data.get('status', '待完成') == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description" class="form-label">
+                任务描述
+                <span class="field-hint">(可选，最多1000字)</span>
+            </label>
+            <textarea 
+                id="description" 
+                name="description" 
+                class="form-control textarea" 
+                rows="4" 
+                placeholder="详细记录任务要求、参考资料链接或待办要点..."
+                maxlength="1000"
+            >{{ form_data.get('description', '') }}</textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 保存并创建任务</button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline">取消返回</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

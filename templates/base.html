@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StudyTask 个人学习任务管理系统{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="brand-logo">
+                <span class="logo-icon">📚</span>
+                <span class="logo-text">StudyTask</span>
+                <span class="logo-tag">个人学习任务管理</span>
+            </a>
+            <nav class="nav-actions">
+                <a href="{{ url_for('index') }}" class="nav-link">任务列表</a>
+                <a href="{{ url_for('task_create') }}" class="btn btn-primary">+ 新建任务</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- 消息提示栏 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <span>{{ message }}</span>
+                            <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% if error_message %}
+            <div class="alert alert-danger">
+                <span>{{ error_message }}</span>
+                <a href="{{ url_for('index') }}" style="margin-left: 10px; color: inherit; text-decoration: underline;">返回主页</a>
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>StudyTask 个人学习任务管理系统 &copy; 2026 | 基于 Python Flask + SQLite 构建</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
