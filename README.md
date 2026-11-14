@@ -3,7 +3,7 @@
 > **《软件工程》课程实验一：AI驱动的个人学习任务管理系统**  
 > **学生姓名**：李哲涵 | **学号**：242806010109 | **班级**：24计科一班  
 > **代码仓库**：https://github.com/ZH0606862/StudyTask  
-> **Web在线访问地址**：https://studytask-6uuz.onrender.com
+> **Web在线访问地址**：https://studytask-6uwz.onrender.com
 
 ---
 
