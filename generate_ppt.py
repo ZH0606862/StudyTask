@@ -67,7 +67,7 @@ def create_presentation():
     info_p1.font.color.rgb = COLOR_MUTED
     
     info_p2 = tf_info.add_paragraph()
-    info_p2.text = "汇报学生：[请填写姓名] | 学号：[请填写学号] | 班级：计算机科学与技术"
+    info_p2.text = "汇报学生：李哲涵 | 学号：242806010109 | 班级：24计科一班"
     info_p2.font.size = Pt(15)
     info_p2.font.color.rgb = COLOR_MUTED
     info_p2.space_before = Pt(6)
